@@ -1,0 +1,31 @@
+{
+  "name": "form-object",
+  "version": "1.0.0",
+  "description": "Form object with axios for Laravel",
+  "main": "form.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/sahibalejandro/form-object.git"
+  },
+  "keywords": [
+    "form",
+    "objects",
+    "axios",
+    "laravel",
+    "vue",
+    "vuejs",
+    "vuex"
+  ],
+  "author": "Sahib Alejandro Jaramillo Leo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sahibalejandro/form-object/issues"
+  },
+  "homepage": "https://github.com/sahibalejandro/form-object#readme",
+  "dependencies": {
+    "axios": "^0.16.2"
+  }
+}
