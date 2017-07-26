@@ -3,49 +3,10 @@ import Errors from './errors';
 
 export default class {
 
-    constructor(data = {}) {
-        this.data = {};
-        this.originalData = data;
+    constructor() {
         this.errors = new Errors();
         this.progress = 0;
-
         this.isPending = false;
-        this.isEditing = data.hasOwnProperty('id');
-
-        this.reset();
-    }
-
-    /**
-     * Reset the form data.
-     */
-    reset() {
-        // If you concern about performance then you should use
-        // lodash.cloneDeep() instead.
-        this.data = JSON.parse(JSON.stringify(this.originalData));
-    }
-
-    /**
-     * Sends the data to the given url using POST method.
-     *
-     * @param  {String} url
-     * @return {Promise}
-     */
-    post(url) {
-        return this.submit('post', url);
-    }
-
-    /**
-     * Sends the data to the given url using POST method if the form is in
-     * creation mode or using PATCH method if it is in edit mode.
-     *
-     * @param  {String} url
-     * @return {Promise}
-     */
-    save(url) {
-        let method = this.isEditing ? 'patch' : 'post';
-        url += this.isEditing ? `/${this.data.id}` : '';
-
-        return this.submit(method, url);
     }
 
     /**
@@ -53,16 +14,17 @@ export default class {
      *
      * @param  {String} method
      * @param  {String} url
+     * @param  {Object} data
      * @return {Promise}
      */
-    submit(method, url) {
+    submit(method, url, data) {
 
         this.errors.clear();
         this.isPending = true;
         this.progress = 0;
 
         return new Promise((resolve, reject) => {
-            axios[method.toLowerCase()](url, this.formData(), this.config())
+            axios[method.toLowerCase()](url, this.formData(data), this.config())
                 .then(response => {
                     resolve(response.data);
                 })
@@ -75,13 +37,14 @@ export default class {
     }
 
     /**
-     * Return true if some field is a File object.
+     * Return true if some field in data object is a File object.
      *
+     * @param  {Object} data
      * @return {Boolean}
      */
-    hasFiles() {
-        for (let prop in this.data) {
-            if (this.data[prop] instanceof File) {
+    hasFiles(data) {
+        for (let prop in data) {
+            if (data[prop] instanceof File) {
                 return true;
             }
         }
@@ -93,19 +56,20 @@ export default class {
      * Return the data object to send in the request, it can be a FormData
      * object or a plain object.
      *
+     * @param  {Object} data
      * @return {FormData|Object}
      */
-    formData() {
+    formData(data) {
         // If this form will not send files, then just return the
         // plain object as data.
-        if ( ! this.hasFiles()) {
-            return this.data;
+        if (! this.hasFiles(data)) {
+            return data;
         }
 
         let formData = new FormData();
 
-        for (let field in this.data) {
-            let value = this.data[field];
+        for (let field in data) {
+            let value = data[field];
 
             // Avoid to send strings "undefined" or "null" as the field's value.
             if (value === undefined || value === null) {
