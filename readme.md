@@ -13,6 +13,9 @@ Use this form object inside your Vue components to send data using axios to a La
             <!-- No need to attach your component data to the form object -->
             <input type="text" v-model="user.name">
 
+            <!-- Display the error message for a field -->
+            <div class="error" v-show="form.errors.has('name')" v-text="form.errors.get('name')"></div>
+
             <!-- Disable buttons using form.isPending -->
             <button type="submit" :disabled="form.isPending">Submit</button>
 
@@ -25,6 +28,8 @@ Use this form object inside your Vue components to send data using axios to a La
 </template>
 
 <script>
+import Form from 'form-object';
+
 export default {
     data() {
         user: {name: 'Sahib'},
