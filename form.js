@@ -102,7 +102,13 @@ export default class {
      */
     handleError(error) {
         if (error.response && error.response.status === 422) {
-            this.errors.set(error.response.data);
+
+            // Laravel >= 5.5 wraps the errors inside an "errors" object.
+            let errors = error.response.data.hasOwnProperty('errors')
+                ? error.response.data.errors
+                : error.response.data;
+
+            this.errors.set(errors);
         }
     }
 }
