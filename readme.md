@@ -1,11 +1,17 @@
 # Form object
 
-Use this form object inside your Vue components to send data using axios to a Laravel application.
+Form Object is a simple layer on top of axios, it understands the Laravel validation error
+responses and handles it for you, now you can focus on the feedback you want to give to
+the users.
 
 ## Installation
 
 ```bash
+# Using the legendary NPM
 npm install form-object --save
+
+# Or using Yarn
+yarn add form-object
 ```
 
 ## Usage
@@ -13,7 +19,7 @@ npm install form-object --save
 ```vue
 <template>
     <form @submit.prevent="submit">
-        <!-- Apply custom classes when a filed has an error -->
+        <!-- Apply custom classes when a field has an error -->
         <div :class="{ 'has-error': form.errors.has('name') }">
 
             <!-- No need to attach your component data to the form object -->
@@ -45,9 +51,10 @@ export default {
     methods: {
         submit() {
             this.form.submit('post', '/users', this.user).then(data => {
-                // Handle response data
+                // This is the data returned from your server.
+                console.log(data);
             }).catch(error => {
-                // Handle request errors
+                // Handle request errors.
             });
         }
     }
