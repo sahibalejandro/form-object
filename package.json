@@ -1,6 +1,6 @@
 {
   "name": "form-object",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Form object with axios for Laravel",
   "main": "form.js",
   "scripts": {
