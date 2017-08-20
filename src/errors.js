@@ -1,11 +1,16 @@
 export default class {
 
+    /**
+     * Constructor
+     *
+     * @return {Errors}
+     */
     constructor() {
         this.errors = {};
     }
 
     /**
-     * Set the errors using an Laravel's error bag object.
+     * Set the errors from a JSON encoded Laravel errors bag object.
      *
      * @param {Object} errors
      */
@@ -14,17 +19,7 @@ export default class {
     }
 
     /**
-     * Set the errors for the given field.
-     *
-     * @param  {String} name
-     * @param  {Array} errors
-     */
-    setFor(name, errors) {
-        this.errors[name] = errors;
-    }
-
-    /**
-     * Checks if a field has error.
+     * Check if the given field has an error.
      *
      * @param  {String} field
      * @return {Boolean}
@@ -46,16 +41,28 @@ export default class {
     }
 
     /**
-     * Clear the error on a field or all errors if no field is specified.
+     * Get all error messages for the given field.
+     *
+     * @param  {String} field
+     * @return {Array}
+     */
+    getAll(field) {
+        if (this.has(field)) {
+            return this.errors[field];
+        }
+    }
+
+    /**
+     * Clear the error message for the given field or all errors if no field is
+     * specified.
      *
      * @param  {String} field
      */
     clear(field) {
         if (field) {
             delete this.errors[field];
-            return;
+        } else {
+            this.errors = {};
         }
-
-        this.errors = {};
     }
 }

@@ -25,8 +25,11 @@ yarn add form-object
             <!-- No need to attach your component data to the form object -->
             <input type="text" v-model="user.name">
 
-            <!-- Display the error message for a field -->
+            <!-- Display the error message for a specific field -->
             <div class="error" v-show="form.errors.has('name')" v-text="form.errors.get('name')"></div>
+
+            <!-- Or display all error messages for specific field -->
+            <div v-for="(error, key) in form.errors.getAll('name')" :key="key" v-text="error"></div>
 
             <!-- Disable buttons using form.isPending -->
             <button type="submit" :disabled="form.isPending">Submit</button>
@@ -61,3 +64,19 @@ export default {
 }
 </script>
 ```
+
+### Clear messages
+You can get rid of all error messages calling the `clear` method that belongs to the `Errors` object, like this:
+
+```javascript
+this.form.errors.clear();
+```
+
+Take note that all messages are removed automatically before sending the request, and in case you need to clear
+an specific error message just pass the field's name to the `clear` method, like this:
+
+```javascript
+this.form.errors.clear('email');
+```
+
+In this way only that one will be removed from the error messages list.

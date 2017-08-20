@@ -3,10 +3,15 @@ import Errors from './errors';
 
 export default class {
 
+    /**
+     * Constructor
+     *
+     * @return {Form}
+     */
     constructor() {
-        this.errors = new Errors();
         this.progress = 0;
         this.isPending = false;
+        this.errors = new Errors();
     }
 
     /**
@@ -19,9 +24,9 @@ export default class {
      */
     submit(method, url, data) {
 
+        this.progress = 0;
         this.errors.clear();
         this.isPending = true;
-        this.progress = 0;
 
         return new Promise((resolve, reject) => {
             axios[method.toLowerCase()](url, this.formData(data), this.config())
@@ -53,7 +58,7 @@ export default class {
     }
 
     /**
-     * Return the data object to send in the request, it can be a FormData
+     * Return the data object to send with the request, it can be a FormData
      * object or a plain object.
      *
      * @param  {Object} data
@@ -69,17 +74,19 @@ export default class {
         let formData = new FormData();
 
         for (let field in data) {
-            let value = data[field];
-
-            // Avoid to send strings "undefined" or "null" as the field's value.
-            if (value === undefined || value === null) {
-                value = '';
-            }
-
-            formData.append(field, value);
+            formData.append(field, this.sanitize(data[field]));
         }
 
         return formData;
+    }
+
+    sanitize(value) {
+        // Avoid to send strings "undefined" or "null" as the field's value.
+        if (value === undefined || value === null) {
+            return '';
+        }
+
+        return value;
     }
 
     /**
@@ -96,17 +103,18 @@ export default class {
     }
 
     /**
-     * Handle a request error.
+     * Handle a error response.
      *
-     * @param  {Object} error
+     * @param  {Object} response
+     * @return {Boolean}
      */
-    handleError(error) {
-        if (error.response && error.response.status === 422) {
+    handleError(response) {
+        if (response.response && response.response.status === 422) {
 
             // Laravel >= 5.5 wraps the errors inside an "errors" object.
-            let errors = error.response.data.hasOwnProperty('errors')
-                ? error.response.data.errors
-                : error.response.data;
+            let errors = response.response.data.hasOwnProperty('errors')
+                ? response.response.data.errors
+                : response.response.data;
 
             this.errors.set(errors);
         }
