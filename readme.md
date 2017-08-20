@@ -1,5 +1,7 @@
 # Form object
 
+[![Build Status](https://travis-ci.org/sahibalejandro/form-object.svg?branch=master)](https://travis-ci.org/sahibalejandro/form-object)
+
 Form Object is a simple layer on top of axios, it understands the Laravel validation error
 responses and handles it for you, now you can focus on the feedback you want to give to
 the users.
