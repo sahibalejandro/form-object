@@ -1,5 +1,23 @@
 import test from 'ava';
+import express from 'express';
 import Form from '../src/form';
+
+test.before(t => {
+    let app = express();
+
+    app.post('/foobar', (req, res) => {
+        res.status(200).json({foo: 'bar'});
+    });
+
+    app.listen(3000);
+});
+
+test('Resolve promise passing response.data from axios', async t => {
+    let form = new Form();
+    let data = await form.submit('POST', 'http://localhost:3000/foobar', {});
+
+    t.deepEqual({foo: 'bar'}, data);
+});
 
 test('Create a new instance', t => {
     let form = new Form();
