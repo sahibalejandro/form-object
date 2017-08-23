@@ -1,4 +1,4 @@
-# Form object
+# Form Object
 
 [![Build Status](https://travis-ci.org/sahibalejandro/form-object.svg?branch=master)](https://travis-ci.org/sahibalejandro/form-object)
 [![Downloads](https://img.shields.io/npm/dt/form-object.svg)](https://www.npmjs.com/package/form-object)
@@ -89,19 +89,19 @@ In this way only that one will be removed from the error messages list.
 Write `this.form.submit('POST', ...)` can be too verbose for you, if it is the case you can use the
 shortcut methods:
 
-#### form.post(<url>, <data>)
-Send `data` via POST request to the given `url`, same as `form.submit('POST', <url>, <data>)`.
+#### form.post(url, data)
+Send `data` via POST request to the given `url`, same as `form.submit('POST', url, data)`.
 
-#### form.patch(<url>, <data>)
-Send `data` via PATCH request to the given `url`, same as `form.submit('PATCH', <url>, <data>)`.
+#### form.patch(url, data)
+Send `data` via PATCH request to the given `url`, same as `form.submit('PATCH', url, data)`.
 
-#### form.put(<url>, <data>)
-Send `data` via PUT request to the given `url`, same as `form.submit('PUT', <url>, <data>)`.
+#### form.put(url, data)
+Send `data` via PUT request to the given `url`, same as `form.submit('PUT', url, data)`.
 
-#### form.delete(<url>, <data>)
-Send `data` via DELETE request to the given `url`, same as `form.submit('DELETE', <url>, <data>)`.
+#### form.delete(url, data)
+Send `data` via DELETE request to the given `url`, same as `form.submit('DELETE', url, data)`.
 
-#### form.save(<url>, <resource>)
+#### form.save(url, <resource>)
 This method will send `resource` via POST or PATCH request to the given `url`, depending on whether
 the resource has a property called `id`, for example:
 
