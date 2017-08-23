@@ -12,6 +12,13 @@ export default class {
         this.progress = 0;
         this.isPending = false;
         this.errors = new Errors();
+
+        // Create shorcut methods
+        ['post', 'patch', 'put', 'delete'].forEach(method => {
+            this[method] = (url, data) => {
+                return this.submit(method, url, data);
+            };
+        });
     }
 
     /**
@@ -22,7 +29,7 @@ export default class {
      * @param  {Object} data
      * @return {Promise}
      */
-    submit(method, url, data) {
+    submit(method, url, data = {}) {
 
         this.progress = 0;
         this.errors.clear();
@@ -39,6 +46,36 @@ export default class {
                 })
                 .then(() => this.isPending = false);
         });
+    }
+
+    /**
+     * Make a POST or PATCH request depending on whether the resource has an id
+     * property.
+     *
+     * @param  {String} url
+     * @param  {Object} resource
+     * @return {Promise}
+     */
+    save(url, resource) {
+        let method = 'post';
+
+        if (resource.hasOwnProperty('id')) {
+            method = 'patch';
+            url = this.urlToPatchResource(url, resource);
+        }
+
+        return this[method](url, resource);
+    }
+
+    /**
+     * Return the URL to patch a resource.
+     *
+     * @param  {String} url
+     * @param  {Object} resource
+     * @return {String}
+     */
+    urlToPatchResource(url, resource) {
+        return url.replace(/\/+$/, '') + '/' + resource.id;
     }
 
     /**

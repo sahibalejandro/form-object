@@ -1,22 +1,62 @@
 import test from 'ava';
-import express from 'express';
 import Form from '../src/form';
-
-test.before(t => {
-    let app = express();
-
-    app.post('/foobar', (req, res) => {
-        res.status(200).json({foo: 'bar'});
-    });
-
-    app.listen(3000);
-});
+import './helpers/express';
 
 test('Resolve promise passing response.data from axios', async t => {
     let form = new Form();
-    let data = await form.submit('POST', 'http://localhost:3000/foobar', {});
+    let data = await form.submit('POST', 'http://localhost:3000/post');
 
-    t.deepEqual({foo: 'bar'}, data);
+    t.deepEqual({method: 'post'}, data);
+});
+
+test('Make a POST request using shortcut', async t => {
+    let form = new Form();
+    let data = await form.post('http://localhost:3000/post');
+
+    t.deepEqual({method: 'post'}, data);
+});
+
+test('Make a PATCH request using shortcut', async t => {
+    let form = new Form();
+    let data = await form.patch('http://localhost:3000/patch');
+
+    t.deepEqual({method: 'patch'}, data);
+});
+
+test('Make a PUT request using shortcut', async t => {
+    let form = new Form();
+    let data = await form.put('http://localhost:3000/put');
+
+    t.deepEqual({method: 'put'}, data);
+});
+
+test('Make a DELETE request using shortcut', async t => {
+    let form = new Form();
+    let data = await form.delete('http://localhost:3000/delete');
+
+    t.deepEqual({method: 'delete'}, data);
+});
+
+test('Make a POST request using save shortcut', async t => {
+    let form = new Form();
+    let data = await form.save('http://localhost:3000/users', {name: 'John Doe'});
+
+    t.deepEqual({name: 'John Doe'}, data);
+});
+
+test('Make a PATCH request using save shortcut', async t => {
+    let form = new Form();
+    let data = await form.save('http://localhost:3000/users', {id: '123', name: 'John Doe'});
+
+    t.deepEqual({id: '123', name: 'John Doe'}, data);
+});
+
+test('Make URL to patch a resource', t => {
+    let form = new Form();
+
+    t.is('foo/bar/123', form.urlToPatchResource('foo/bar', {id: 123}));
+    t.is('foo/bar/123', form.urlToPatchResource('foo/bar/', {id: 123}));
+    t.is('foo/bar/123', form.urlToPatchResource('foo/bar//', {id: 123}));
 });
 
 test('Create a new instance', t => {
@@ -25,6 +65,10 @@ test('Create a new instance', t => {
     t.is(0, form.progress);
     t.is(false, form.isPending);
     t.is('object', typeof form.errors);
+    t.is('function', typeof form.post);
+    t.is('function', typeof form.patch);
+    t.is('function', typeof form.put);
+    t.is('function', typeof form.delete);
 });
 
 test('Check data does not contains instances of File', t => {

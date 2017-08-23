@@ -26,11 +26,20 @@ var _class = function () {
      * @return {Form}
      */
     function _class() {
+        var _this = this;
+
         _classCallCheck(this, _class);
 
         this.progress = 0;
         this.isPending = false;
         this.errors = new _errors2.default();
+
+        // Create shorcut methods
+        ['post', 'patch', 'put', 'delete'].forEach(function (method) {
+            _this[method] = function (url, data) {
+                return _this.submit(method, url, data);
+            };
+        });
     }
 
     /**
@@ -45,23 +54,62 @@ var _class = function () {
 
     _createClass(_class, [{
         key: 'submit',
-        value: function submit(method, url, data) {
-            var _this = this;
+        value: function submit(method, url) {
+            var _this2 = this;
+
+            var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
 
             this.progress = 0;
             this.errors.clear();
             this.isPending = true;
 
             return new Promise(function (resolve, reject) {
-                _axios2.default[method.toLowerCase()](url, _this.formData(data), _this.config()).then(function (response) {
+                _axios2.default[method.toLowerCase()](url, _this2.formData(data), _this2.config()).then(function (response) {
                     resolve(response.data);
                 }).catch(function (error) {
-                    _this.handleError(error);
+                    _this2.handleError(error);
                     reject(error);
                 }).then(function () {
-                    return _this.isPending = false;
+                    return _this2.isPending = false;
                 });
             });
+        }
+
+        /**
+         * Make a POST or PATCH request depending on whether the resource has an id
+         * property.
+         *
+         * @param  {String} url
+         * @param  {Object} resource
+         * @return {Promise}
+         */
+
+    }, {
+        key: 'save',
+        value: function save(url, resource) {
+            var method = 'post';
+
+            if (resource.hasOwnProperty('id')) {
+                method = 'patch';
+                url = this.urlToPatchResource(url, resource);
+            }
+
+            return this[method](url, resource);
+        }
+
+        /**
+         * Return the URL to patch a resource.
+         *
+         * @param  {String} url
+         * @param  {Object} resource
+         * @return {String}
+         */
+
+    }, {
+        key: 'urlToPatchResource',
+        value: function urlToPatchResource(url, resource) {
+            return url.replace(/\/+$/, '') + '/' + resource.id;
         }
 
         /**
@@ -128,11 +176,11 @@ var _class = function () {
     }, {
         key: 'config',
         value: function config() {
-            var _this2 = this;
+            var _this3 = this;
 
             return {
                 onUploadProgress: function onUploadProgress(progressEvent) {
-                    _this2.progress = Math.round(progressEvent.loaded * 100 / progressEvent.total);
+                    _this3.progress = Math.round(progressEvent.loaded * 100 / progressEvent.total);
                 }
             };
         }
