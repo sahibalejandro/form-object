@@ -50,8 +50,10 @@ import Form from 'form-object';
 
 export default {
     data() {
-        user: {name: 'Sahib'},
-        form: new Form()
+        return: {
+            user: {name: 'Sahib'},
+            form: new Form()
+        }
     },
 
     methods: {
