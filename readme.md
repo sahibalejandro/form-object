@@ -33,6 +33,9 @@ yarn add form-object
 
             <!-- Or display all error messages for specific field -->
             <div v-for="(error, key) in form.errors.getAll('name')" :key="key" v-text="error"></div>
+            
+            <!-- Pass an instance of File to your model to support file uploads -->
+            <input type="file" @change="user.photo = $event.target.files[0]" accept="image/jpeg">
 
             <!-- Disable buttons using form.isPending -->
             <button type="submit" :disabled="form.isPending">Submit</button>
@@ -51,7 +54,7 @@ import Form from 'form-object';
 export default {
     data() {
         return: {
-            user: {name: 'Sahib'},
+            user: {name: 'Sahib', photo: null},
             form: new Form()
         }
     },
