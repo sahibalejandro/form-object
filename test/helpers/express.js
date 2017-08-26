@@ -30,5 +30,19 @@ test.before(t => {
         res.json({id: req.params.id, name: req.body.name});
     });
 
+    app.post('/error', (req, res) => {
+        res.status(422).json({
+            field: ['Error message']
+        });
+    });
+
+    app.post('/error-l55', (req, res) => {
+        res.status(422).json({
+            errors: {
+                field: ['Error message']
+            }
+        });
+    });
+
     app.listen(3000);
 });
