@@ -1,4 +1,4 @@
-export default class {
+module.exports = class {
 
     /**
      * Constructor
@@ -65,4 +65,4 @@ export default class {
             this.errors = {};
         }
     }
-}
+};

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Errors from './errors';
 
-export default class {
+module.exports = class {
 
     /**
      * Constructor
@@ -156,4 +156,4 @@ export default class {
             this.errors.set(errors);
         }
     }
-}
+};
