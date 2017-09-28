@@ -9,6 +9,8 @@ the users.
 
 ## Installation
 
+NOTE: version *>=1.4.3+* requires Vue *>=1.0*
+
 ```bash
 # Using the legendary NPM
 npm install form-object --save
