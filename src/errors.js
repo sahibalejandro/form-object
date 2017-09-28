@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 module.exports = class {
 
     /**
@@ -60,7 +62,7 @@ module.exports = class {
      */
     clear(field) {
         if (field) {
-            delete this.errors[field];
+            Vue.delete(this.errors, field);
         } else {
             this.errors = {};
         }

@@ -37,7 +37,8 @@
   },
   "homepage": "https://github.com/sahibalejandro/form-object#readme",
   "dependencies": {
-    "axios": "^0.16.2"
+    "axios": "^0.16.2",
+    "vue": ">=1.0.0"
   },
   "devDependencies": {
     "ava": "^0.22.0",

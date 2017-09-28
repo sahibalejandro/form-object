@@ -1,6 +1,12 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _vue = require('vue');
+
+var _vue2 = _interopRequireDefault(_vue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25,7 +31,7 @@ module.exports = function () {
 
 
     _createClass(_class, [{
-        key: "set",
+        key: 'set',
         value: function set(errors) {
             this.errors = errors;
         }
@@ -38,7 +44,7 @@ module.exports = function () {
          */
 
     }, {
-        key: "has",
+        key: 'has',
         value: function has(field) {
             return this.errors.hasOwnProperty(field);
         }
@@ -51,7 +57,7 @@ module.exports = function () {
          */
 
     }, {
-        key: "get",
+        key: 'get',
         value: function get(field) {
             if (this.has(field)) {
                 return this.errors[field][0];
@@ -66,7 +72,7 @@ module.exports = function () {
          */
 
     }, {
-        key: "getAll",
+        key: 'getAll',
         value: function getAll(field) {
             if (this.has(field)) {
                 return this.errors[field];
@@ -81,10 +87,10 @@ module.exports = function () {
          */
 
     }, {
-        key: "clear",
+        key: 'clear',
         value: function clear(field) {
             if (field) {
-                delete this.errors[field];
+                _vue2.default.delete(this.errors, field);
             } else {
                 this.errors = {};
             }
