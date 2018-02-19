@@ -3,6 +3,9 @@
 [![Build Status](https://travis-ci.org/sahibalejandro/form-object.svg?branch=master)](https://travis-ci.org/sahibalejandro/form-object)
 [![Downloads](https://img.shields.io/npm/dt/form-object.svg)](https://www.npmjs.com/package/form-object)
 
+### Important:
+__This project still active, feel free to clone, open issues or ask for help__
+
 Form Object is a simple layer on top of axios, it understands the Laravel validation error
 responses and handles it for you, now you can focus on the feedback you want to give to
 the users.
