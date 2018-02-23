@@ -67,4 +67,13 @@ module.exports = class {
             this.errors = {};
         }
     }
+
+    /**
+     * Determine if the form has any error.
+     *
+     * @returns {boolean}
+     */
+    any() {
+        return Object.keys(this.errors).length > 0;
+    }
 };
