@@ -86,3 +86,21 @@ test('Clear all error messages', t => {
     t.is(false, errors.has('name'));
     t.is(false, errors.has('email'));
 });
+
+test('It has any error', t => {
+    let errors = new Errors();
+
+    let errorsResponse = {
+        input: ['Error Message']
+    };
+
+    errors.set(errorsResponse);
+
+    t.is(errors.any(), true);
+});
+
+test('It has no errors ', t => {
+    let errors = new Errors();
+
+    t.is(errors.any(), false);
+});

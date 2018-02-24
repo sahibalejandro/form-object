@@ -95,6 +95,18 @@ module.exports = function () {
                 this.errors = {};
             }
         }
+
+        /**
+         * Determine if the form has any error.
+         *
+         * @returns {boolean}
+         */
+
+    }, {
+        key: 'any',
+        value: function any() {
+            return Object.keys(this.errors).length > 0;
+        }
     }]);
 
     return _class;
