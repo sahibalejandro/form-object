@@ -27,6 +27,12 @@ yarn add form-object
 ```vue
 <template>
     <form @submit.prevent="submit">
+
+        <!-- Display a global message if there is any errors -->
+        <div class="alert alert-danger" v-if="form.errors.any()" v-cloak>
+            Please check the form and try again!
+        </div>
+
         <!-- Apply custom classes when a field has an error -->
         <div :class="{ 'has-error': form.errors.has('name') }">
 
