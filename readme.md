@@ -64,7 +64,7 @@ import Form from 'form-object';
 
 export default {
     data() {
-        return: {
+        return {
             user: {name: 'Sahib', photo: null},
             form: new Form()
         }
