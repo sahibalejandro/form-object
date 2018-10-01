@@ -1,6 +1,21 @@
 import test from 'ava';
+import axios from 'axios';
 import Form from '../src/form';
 import './helpers/express';
+
+test('Set custom axios instance', async t => {
+    Form.defaults.axios = axios.create({
+        baseURL: 'http://localhost:3000/custom/',
+    });
+
+    const form = new Form();
+    const data = await form.post('axios', {});
+
+    t.is(true, data.customAxios);
+
+    // Make sure to not break subsequent test cases.
+    Form.defaults.axios = axios;
+});
 
 test('Create a new instance', t => {
     let form = new Form();

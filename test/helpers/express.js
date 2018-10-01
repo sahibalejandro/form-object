@@ -44,5 +44,9 @@ test.before(t => {
         });
     });
 
+    app.post('/custom/axios', (req, res) => {
+        res.json({customAxios: true});
+    });
+
     app.listen(3000);
 });
