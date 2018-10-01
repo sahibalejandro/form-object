@@ -145,5 +145,21 @@ form.submit('PATCH', '/users/123', resource);
 
 As you can see, the `save` method will append the `id` to the original `url` automatically.
 
+## Customization
+You can customize the behaviour by modifying the `Form.defaults` property.
+
+### Using a custom axios instance
+In some cases, you will need to use a customized axios instance instead of the
+one that comes along with this package, to do this you can attach your own
+axios instance to the *object defaults*:
+
+```javascript
+import axios from 'axios';
+import Form from 'form-object';
+
+axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+Form.defaults.axios = axios;
+```
+
 ## Promises
 Please read the Axios documentation at https://github.com/mzabriskie/axios#promises
