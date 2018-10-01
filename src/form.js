@@ -1,8 +1,7 @@
 import axios from 'axios';
 import Errors from './errors';
 
-module.exports = class {
-
+class Form {
     /**
      * Constructor
      *
@@ -36,7 +35,7 @@ module.exports = class {
         this.isPending = true;
 
         return new Promise((resolve, reject) => {
-            axios[method.toLowerCase()](url, this.formData(data), this.config())
+            Form.defaults.axios[method.toLowerCase()](url, this.formData(data), this.config())
                 .then(response => {
                     resolve(response.data);
                 })
@@ -157,3 +156,10 @@ module.exports = class {
         }
     }
 };
+
+/*
+ * Expose default values in order to let users customize behavior.
+ */
+Form.defaults = {axios};
+
+module.exports = Form;

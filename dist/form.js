@@ -14,17 +14,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-module.exports = function () {
-
+var Form = function () {
     /**
      * Constructor
      *
      * @return {Form}
      */
-    function _class() {
+    function Form() {
         var _this = this;
 
-        _classCallCheck(this, _class);
+        _classCallCheck(this, Form);
 
         this.progress = 0;
         this.isPending = false;
@@ -48,7 +47,7 @@ module.exports = function () {
      */
 
 
-    _createClass(_class, [{
+    _createClass(Form, [{
         key: 'submit',
         value: function submit(method, url) {
             var _this2 = this;
@@ -61,7 +60,7 @@ module.exports = function () {
             this.isPending = true;
 
             return new Promise(function (resolve, reject) {
-                _axios2.default[method.toLowerCase()](url, _this2.formData(data), _this2.config()).then(function (response) {
+                Form.defaults.axios[method.toLowerCase()](url, _this2.formData(data), _this2.config()).then(function (response) {
                     resolve(response.data);
                 }).catch(function (error) {
                     _this2.handleError(error);
@@ -201,5 +200,14 @@ module.exports = function () {
         }
     }]);
 
-    return _class;
+    return Form;
 }();
+
+;
+
+/*
+ * Expose default values in order to let users customize behavior.
+ */
+Form.defaults = { axios: _axios2.default };
+
+module.exports = Form;
