@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Errors from './errors';
+import objectToFormData from 'object-to-formdata';
 
 class Form {
     /**
@@ -48,6 +49,21 @@ class Form {
     }
 
     /**
+     * Get a FormData instance from the given data object, if class FormData is
+     * not available the original data object is returned.
+     *
+     * @param  {Object} data
+     * @return {FormData|Object}
+     */
+    formData(data) {
+        if (typeof FormData === 'undefined') {
+            return data;
+        }
+
+        return objectToFormData(data);
+    }
+
+    /**
      * Make a POST or PATCH request depending on whether the resource has an id
      * property.
      *
@@ -75,54 +91,6 @@ class Form {
      */
     urlToPatchResource(url, resource) {
         return url.replace(/\/+$/, '') + '/' + resource.id;
-    }
-
-    /**
-     * Return true if some field in data object is a File object.
-     *
-     * @param  {Object} data
-     * @return {Boolean}
-     */
-    hasFiles(data) {
-        for (let prop in data) {
-            if (data[prop] instanceof File) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Return the data object to send with the request, it can be a FormData
-     * object or a plain object.
-     *
-     * @param  {Object} data
-     * @return {FormData|Object}
-     */
-    formData(data) {
-        // If this form will not send files, then just return the
-        // plain object as data.
-        if (! this.hasFiles(data)) {
-            return data;
-        }
-
-        let formData = new FormData();
-
-        for (let field in data) {
-            formData.append(field, this.sanitize(data[field]));
-        }
-
-        return formData;
-    }
-
-    sanitize(value) {
-        // Avoid to send strings "undefined" or "null" as the field's value.
-        if (value === undefined || value === null) {
-            return '';
-        }
-
-        return value;
     }
 
     /**

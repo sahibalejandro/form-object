@@ -10,6 +10,10 @@ var _errors = require('./errors');
 
 var _errors2 = _interopRequireDefault(_errors);
 
+var _objectToFormdata = require('object-to-formdata');
+
+var _objectToFormdata2 = _interopRequireDefault(_objectToFormdata);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -72,6 +76,24 @@ var Form = function () {
         }
 
         /**
+         * Get a FormData instance from the given data object, if class FormData is
+         * not available the original data object is returned.
+         *
+         * @param  {Object} data
+         * @return {FormData|Object}
+         */
+
+    }, {
+        key: 'formData',
+        value: function formData(data) {
+            if (typeof FormData === 'undefined') {
+                return data;
+            }
+
+            return (0, _objectToFormdata2.default)(data);
+        }
+
+        /**
          * Make a POST or PATCH request depending on whether the resource has an id
          * property.
          *
@@ -105,61 +127,6 @@ var Form = function () {
         key: 'urlToPatchResource',
         value: function urlToPatchResource(url, resource) {
             return url.replace(/\/+$/, '') + '/' + resource.id;
-        }
-
-        /**
-         * Return true if some field in data object is a File object.
-         *
-         * @param  {Object} data
-         * @return {Boolean}
-         */
-
-    }, {
-        key: 'hasFiles',
-        value: function hasFiles(data) {
-            for (var prop in data) {
-                if (data[prop] instanceof File) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /**
-         * Return the data object to send with the request, it can be a FormData
-         * object or a plain object.
-         *
-         * @param  {Object} data
-         * @return {FormData|Object}
-         */
-
-    }, {
-        key: 'formData',
-        value: function formData(data) {
-            // If this form will not send files, then just return the
-            // plain object as data.
-            if (!this.hasFiles(data)) {
-                return data;
-            }
-
-            var formData = new FormData();
-
-            for (var field in data) {
-                formData.append(field, this.sanitize(data[field]));
-            }
-
-            return formData;
-        }
-    }, {
-        key: 'sanitize',
-        value: function sanitize(value) {
-            // Avoid to send strings "undefined" or "null" as the field's value.
-            if (value === undefined || value === null) {
-                return '';
-            }
-
-            return value;
         }
 
         /**
