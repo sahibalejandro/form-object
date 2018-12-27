@@ -10,6 +10,14 @@ Form Object is a simple layer on top of axios, it understands the Laravel valida
 responses and handles it for you, now you can focus on the feedback you want to give to
 the users.
 
+* [Installation](#installation)
+* [Usage](#usage)
+  * [Clear messages](#clear-messages)
+  * [Shortcut methods](#shortcut-methods)
+* [Customization](#customization)
+  * [Using a custom Axios instance](#using-a-custom-axios-instance)
+* [Promises](#promises)
+
 ## Installation
 
 NOTE: version *>=1.4.3+* requires Vue *>=1.0*
