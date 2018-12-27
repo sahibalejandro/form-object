@@ -10,6 +10,16 @@ Form Object is a simple layer on top of axios, it understands the Laravel valida
 responses and handles it for you, now you can focus on the feedback you want to give to
 the users.
 
+* [Installation](#installation)
+* [Usage](#usage)
+  * [Clear messages](#clear-messages)
+  * [Shortcut methods](#shortcut-methods)
+  * [Array inputs](#array-inputs)
+    * [Caveats](#caveats)
+* [Customization](#customization)
+  * [Using a custom Axios instance](#using-a-custom-axios-instance)
+* [Promises](#promises)
+
 ## Installation
 
 NOTE: version *>=1.4.3+* requires Vue *>=1.0*
@@ -144,6 +154,61 @@ form.submit('PATCH', '/users/123', resource);
 ```
 
 As you can see, the `save` method will append the `id` to the original `url` automatically.
+
+### Array inputs
+Use normal arrays when array inputs are needed, here is a simple example:
+
+```vue
+<template>
+    <div>
+        <div v-for="(color, i) in product.colors">
+            <input type="text" v-model="product.colors[i]" />
+            <div v-show="form.errors.has(`colors.${i}`)" v-text="form.errors.get(`colors.${i}`)"></div>
+        </div>
+        
+        <div v-for="(photo, i) in product.photos">
+            <input type="file" @change="product.photos[i] = $event.target.files[0]" accept="image/jpeg" />
+            <div v-show="form.errors.has(`photos.${i}`)" v-text="form.errors.get(`photos.${i}`)"></div>
+        </div>
+    </div>
+</template>
+
+<script>
+import Form from 'form-object';
+
+export default {
+    data() {
+        return {
+            form: new Form(),
+            // Fill array as you need, I use null to simplify this example.
+            product: {
+                colors: [null, null],
+                photos: [null, null]
+            }
+        };
+    },
+
+    methods: {
+        async submit() {
+            await this.form.post('/arrays-support', this.product);
+        }
+    }
+}
+</script>
+```
+
+And your Laravel validation rules will be something like this:
+
+```php
+$rules = [
+    'colors.*' => 'required',
+    'photos.*' => 'required|file',
+];
+```
+
+#### Caveats
+Seems like Laravel pass the validation rules for required files if the array
+contains at least one element. If you find a workaround for this let me know!
 
 ## Customization
 You can customize the behaviour by modifying the `Form.defaults` property.
