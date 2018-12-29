@@ -29,6 +29,30 @@ test('Create a new instance', t => {
     t.is('function', typeof form.delete);
 });
 
+test('Check data does not contains instances of File', t => {
+    let form = new Form();
+    let data = {
+        field: 'value'
+    };
+
+    t.is(false, form.hasFiles(data));
+});
+
+test('Check data contains instances of File', t => {
+    let form = new Form();
+
+    let data1 = {
+        file: new File([], null)
+    };
+
+    let data2 = {
+        files: [new File([], null), new File([], null)]
+    };
+
+    t.is(true, form.hasFiles(data1));
+    t.is(true, form.hasFiles(data2));
+});
+
 test('Make URL to patch a resource', t => {
     let form = new Form();
 

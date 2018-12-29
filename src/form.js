@@ -30,13 +30,27 @@ class Form {
      * @return {Promise}
      */
     submit(method, url, data = {}) {
+        let formData = data;
+        method = method.toLowerCase();
+
+        if (this.hasFiles(formData)) {
+            formData = objectToFormData(formData);
+
+            // Form Method Spoofing is needed to send files using PUT/PATCH/DELETE.
+            // https://laravel.com/docs/5.5/routing#form-method-spoofing
+            // https://github.com/laravel/framework/issues/13457
+            if (method !== 'post') {
+                formData.append('_method', method.toUpperCase());
+                method = 'post';
+            }
+        }
 
         this.progress = 0;
         this.errors.clear();
         this.isPending = true;
 
         return new Promise((resolve, reject) => {
-            Form.defaults.axios[method.toLowerCase()](url, this.formData(data), this.config())
+            Form.defaults.axios[method](url, formData, this.config())
                 .then(response => {
                     resolve(response.data);
                 })
@@ -49,18 +63,37 @@ class Form {
     }
 
     /**
-     * Get a FormData instance from the given data object, if class FormData is
-     * not available the original data object is returned.
+     * Check if the given data contains any instance of File.
      *
      * @param  {Object} data
-     * @return {FormData|Object}
+     * @return {Boolean}
      */
-    formData(data) {
-        if (typeof FormData === 'undefined') {
-            return data;
+    hasFiles(data) {
+        for (let prop in data) {
+            if (this.fileIsPresent(data[prop])) {
+                return true;
+            }
         }
 
-        return objectToFormData(data);
+        return false;
+    }
+
+    /**
+     * Check if the given item is (or contains) a File.
+     *
+     * @param  {?} item
+     * @return {Boolean}
+     */
+    fileIsPresent(item) {
+        if (item instanceof File) {
+            return true;
+        }
+
+        if (item instanceof Array) {
+            return item.some(element => element instanceof File);
+        }
+
+        return false;
     }
 
     /**
